@@ -1,0 +1,41 @@
+.hints
+    width: 262px
+    min-height: 118px
+    background-color: rgb(159, 0, 19)
+    border-radius: 20px
+    padding: 20px 20px 0 20px
+    &__wrapper
+        display: flex
+        flex-direction: column
+    &__title
+        font-size: 20px
+        font-weight: 400
+        color: rgb(255, 248, 231)
+        margin: 0
+        margin-bottom: 14px
+    &__btns
+        display: flex
+        justify-content: space-around
+        &_btn
+            width: 67px
+            height: 27px
+            text-align: center
+            font-size: 10px
+            font-weight: 700
+            border: none
+            border-radius: 10px
+            cursor: pointer
+            background-color: rgb(255, 248, 231)
+            transition: .3s all
+            &:hover
+                background-color: rgba(255, 248, 231, .5)
+                color: rgba(255, 248, 231, .5)
+            &:disabled
+                background-color: rgba(255, 248, 231, .5)
+                color: rgba(255, 248, 231, .5)
+        &_hint
+            color: rgb(255, 248, 231)
+            margin-top: 6px
+            max-width: 67px
+            min-height: 18px
+            text-align: center
