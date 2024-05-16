@@ -5,44 +5,26 @@ import InputField from "../InputField/InputField";
 import Hints from "../hints/Hints";
 import useCountriesServer from "../../services/CountriesServer";
 import Spinner from "../spinner/Spinner";
+import ErrorMessage from "../errorMessage/ErrorMessage";
 
 import "./Guess.sass"
 
 const Guess = () => {
 
     const [currentCountry, setCurrentCountry] = useState({})
-    const [currentRegion, setCurrentRegion] = useState({})
-    const [currentDataRegion, setCurrentDataRegion] = useState([])
-    const [newOne, setNewOne] = useState(false)
-    const [loading, setLoading] = useState(false)
-    const {data} = useCountriesServer()
+    const [filtredArr, setFiltredArr] = useState({name: "", num: 0})
+    // const [loading, setLoading] = useState(true)
 
-    useEffect(() => {setCurrentDataRegion(data)}, [data])
+    const {getRandomCountry, loading, error} = useCountriesServer()
 
     useEffect(() => {
-        setCurrentDataRegion(data.filter(({region}) => region === currentRegion))
-        console.log("hello");
-        // getRandomCountry()
-    }, [currentRegion])
+        getRandomCountry(filtredArr.name, filtredArr.num).then(data => setCurrentCountry(data))
+    }, [filtredArr])
 
-    useEffect(() => {
-        getRandomCountry()
-    }, [loading, currentDataRegion])
-
-
-    const getRandomCountry = () => {
-        const randomNumber = Math.floor(Math.random() * currentDataRegion.length)
-        setCurrentCountry(currentDataRegion[randomNumber])
-    }
-    
     console.log(currentCountry);
 
-    if (!currentDataRegion || currentDataRegion.length === 0 || !currentCountry) {
-        return <Spinner/>
-    }
-
-
-    // console.log(currentCountry);
+    const spinner = loading ? <Spinner/> : null;
+    const errorMassage = error ? <ErrorMessage/> : null
 
     return (
         <main className="main">
@@ -50,20 +32,22 @@ const Guess = () => {
                 GUESS THE COUNTRY
             </h1>
             <div className="main__wrapper">
-                {loading ? <Spinner/> : <View img={currentCountry.img} alt={currentCountry.alt} contryName={currentCountry.name} newOne={setNewOne} region={{setCurrentRegion, currentRegion}} currentCountry={currentCountry} />}
+                {spinner}
+                {errorMassage}
+                {<View img={currentCountry.img} alt={currentCountry.alt} currentCountry={currentCountry} setCurrentCountry={setCurrentCountry} filtredArr={filtredArr} setFiltredArr={setFiltredArr} />}
             </div>
         </main>
     )
 }
 
-const View = ({img, alt, contryName, newOne, region, currentCountry}) => {
+const View = ({img, alt, currentCountry, setCurrentCountry, filtredArr, setFiltredArr}) => {
     return (
         <>
             <div className="main__wrapper_img">
                 <img src={img} alt={alt} />
             </div>
                 <div>
-                <InputField contryName={contryName} newOne={newOne} region={region} />
+                <InputField currentCountry={currentCountry} setCurrentCountry={setCurrentCountry} filtredArr={filtredArr} setFiltredArr={setFiltredArr}/>
                 <Hints currentCountry={currentCountry}/>
             </div>
         </>
@@ -71,12 +55,12 @@ const View = ({img, alt, contryName, newOne, region, currentCountry}) => {
 }
 
 View.propTypes = {
-    img: PropTypes.string.isRequired,
-    alt: PropTypes.string.isRequired,
-    contryName: PropTypes.string.isRequired,
-    newOne: PropTypes.func.isRequired,
-    region: PropTypes.object.isRequired,
-    currentCountry: PropTypes.object.isRequired
+    img: PropTypes.string,
+    alt: PropTypes.string,
+    setCurrentCountry: PropTypes.func,
+    currentCountry: PropTypes.object.isRequired,
+    filtredArr: PropTypes.object.isRequired,
+    setFiltredArr: PropTypes.func.isRequired
 };
 
 export default Guess;

@@ -1,50 +1,59 @@
 import { useState, useEffect } from "react";
 
-const url = 'https://restcountries.com/v3.1/all';
+import { useHttp } from "../hooks/http.hooks";
+import ErrorMessage from "../components/errorMessage/ErrorMessage";
+
 
 const useCountriesServer = () =>  {
 
-    const [data, setData] = useState([])
+    const {loading, error, request, clearError, data} = useHttp()
 
-    const fetchCountryData = async () => {
-        try {
-            const res = await fetch(url);
-            const countries = await res.json();
-            const arr = countries.map(({ name, capital, languages, region, ccn3, flags }) => {
-                return {
-                    name: name.common,
-                    capital: `${capital}`,
-                    languages: languages ? Object.entries(languages)[0][1] : "no language", 
-                    region, 
-                    ccn3,
-                    img: flags.svg,
-                    alt: flags.alt
-                }
-            });
-            setData(arr);
-        } catch (error) {
-            console.error('Error fetching data:', error);
+    const _apiBase = 'https://restcountries.com/v3.1/all';
+
+
+    const getAllCoutries = async (filData) => {
+        const res = await request(_apiBase);
+        let data = !filData ? res : filData
+        return data.map(_transformCharacter)
+    }
+
+
+    const getRandomCountry = async (filData, n = 250) => {
+        const res = await request(_apiBase);
+        if (typeof filData === "string") {
+            const num = Math.floor(Math.random() * 250)
+            console.log("u here");
+            return _transformCharacter(res[num])
+        } else {
+            const num = Math.floor(Math.random() * n)
+            return filData[num]
         }
-    };
+    }
 
-    useEffect(() => {
-        fetchCountryData();
-    }, []);
+    const getFiltredCountry = async (currentRegion) => {
+        const res = await request(_apiBase);
+        if (!currentRegion.length) {
+            return [res.map(_transformCharacter), res.length]
+        }
+        const data = res.filter((data) => data.region === currentRegion)
+        return [data.map(_transformCharacter), data.length]
+    }
 
-    // console.log("hello");
 
-    return {data}
+    const _transformCharacter = (data) => {
+        return {
+            name: data.name.common,
+            capital: `${data.capital}`,
+            languages: data.languages ? Object.entries(data.languages)[0][1] : "no language", 
+            region: data.region, 
+            ccn3: data.ccn3,
+            img: data.flags.svg,
+            alt: data.flags.alt
+        }
+    }
+
+    return {getRandomCountry, getFiltredCountry, getAllCoutries, loading, error}
 }
 
 
 export default useCountriesServer;
-
-
-    // const getCountries = async (url) => {
-    //     let res = await fetch(url);
-
-    //     if (!res.ok) {
-    //         throw new Error(`Could not fetch ${url}, status: ${res.status}`);
-    //     }
-    //     return await res.json();
-    // }

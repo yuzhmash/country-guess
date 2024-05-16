@@ -10,27 +10,11 @@ const Navbar = () => {
             </div>
             <ul>
                 <li>
-                    World
+                    guess
                 </li>
                 /
                 <li>
-                    Europa
-                </li>
-                /
-                <li>
-                    Africa
-                </li>
-                /
-                <li>
-                    Americas
-                </li>
-                /
-                <li>
-                    Oceania
-                </li>
-                /
-                <li>
-                    Asia
+                    list of countries
                 </li>
             </ul>
         </nav>

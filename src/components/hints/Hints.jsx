@@ -65,9 +65,9 @@ const Hints = ({currentCountry}) => {
 
 Hints.propTypes = {
     currentCountry: PropTypes.shape({
-        capital: PropTypes.string.isRequired,
-        languages: PropTypes.string.isRequired,
-        region: PropTypes.string.isRequired
+        capital: PropTypes.string,
+        languages: PropTypes.string,
+        region: PropTypes.string
     }).isRequired,
 };
 

@@ -1,27 +1,32 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import PropTypes from 'prop-types';
 
+import useCountriesServer from "../../services/CountriesServer";
+
 import "./InputField.sass"
 
-const InputField = ({contryName, newOne, region}) => {
-
+const InputField = ({currentCountry, setCurrentCountry, filtredArr, setFiltredArr}) => {
+    
     const [correct, setCorrect] = useState(true)
     const [currentValue, setCurrentValue] = useState("")
-    const prevPropRef = useRef();
+    const [currentRegion, setCurrentRegion] = useState("")
 
-    useEffect(() => {
-        prevPropRef.current = contryName;
-    }, [contryName]);
+    const {getRandomCountry, getFiltredCountry} = useCountriesServer()
+
+    const onFilter = (currentRegion) => {
+        getFiltredCountry(currentRegion).then(data => setFiltredArr({name: data[0], num: data[1]}))
+        setCurrentRegion(currentRegion)
+    }
     
 
     const onSubmited = (e) => {
         e.preventDefault()
         formik.resetForm()
         setCurrentValue("")
-        newOne()
         setCorrect(true)
+        getRandomCountry(filtredArr.name, filtredArr.num).then(data => setCurrentCountry(data))
     }
 
     const formik = useFormik({
@@ -32,7 +37,7 @@ const InputField = ({contryName, newOne, region}) => {
         validationSchema: Yup.string()
             .required("Обязательное поле!"),
         onSubmit: (values, {setFieldError}) => {
-            if (contryName.toUpperCase() !== currentValue.toUpperCase()) {
+            if (currentCountry.name.toUpperCase() !== currentValue.toUpperCase()) {
                 setFieldError("name", "incorrect")
                 setCorrect(true)
             } else {
@@ -55,8 +60,8 @@ const InputField = ({contryName, newOne, region}) => {
             <select 
                 id="region"
                 name="region"
-                value={region.currentRegion}
-                onChange={(e) => region.setCurrentRegion(e.target.value)}>
+                value={currentRegion}
+                onChange={(e) => {onFilter(e.target.value)}}>
                 <option value="">choose a region</option>
                 <option value="Europe">Eurupa</option>
                 <option value="Americas">Americas</option>
@@ -73,9 +78,10 @@ const InputField = ({contryName, newOne, region}) => {
 }
 
 InputField.propTypes = {
-    contryName: PropTypes.string.isRequired,
-    newOne: PropTypes.func.isRequired,
-    region: PropTypes.object.isRequired
+    currentCountry: PropTypes.object,
+    setCurrentCountry: PropTypes.func.isRequired,
+    filtredArr: PropTypes.object.isRequired,
+    setFiltredArr: PropTypes.func.isRequired
 };
 
 export default InputField;
