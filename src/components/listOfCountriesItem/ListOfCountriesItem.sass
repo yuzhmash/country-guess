@@ -1,0 +1,32 @@
+.countries-list
+    width: 867px
+    display: grid
+    grid-template-columns: 1fr 1fr 1fr
+    column-gap: 60px
+    row-gap: 60px
+    &_item
+        width: 249px
+        min-height: 357px
+        background-color: #000
+        border-radius: 20px
+        &_img
+            width: 249px
+            min-height: 131px
+            cursor: pointer
+            margin-bottom: 19px
+            img
+                max-width: 100%
+                border-radius: 20px
+                border: 2px solid #000
+        &_title
+            font-size: 24px
+            font-weight: 700
+            color: #fff
+            text-align: center
+            margin-bottom: 19px
+        &_pop, &_capital, &_lang, &_region
+            font-size: 14px
+            font-weight: 700
+            color: #fff
+            margin-left: 23px
+            margin-bottom: 9px

@@ -13,8 +13,7 @@ const Guess = () => {
 
     const [currentCountry, setCurrentCountry] = useState({})
     const [filtredArr, setFiltredArr] = useState({name: "", num: 0})
-    // const [loading, setLoading] = useState(true)
-
+    
     const {getRandomCountry, loading, error} = useCountriesServer()
 
     useEffect(() => {

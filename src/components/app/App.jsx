@@ -1,5 +1,7 @@
 import Navbar from "../navbar/Navbar";
 import Guess from "../guess/Guess";
+import ListOfCountries from "../listOfCountries/ListOfCountries";
+import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 
 
 const App = () => {
@@ -7,7 +9,12 @@ const App = () => {
     return (
         <>
             <Navbar/>
-            <Guess/>
+            {/* <ErrorBoundary>
+                <Guess/>
+            </ErrorBoundary> */}
+            <ErrorBoundary>
+                <ListOfCountries/>
+            </ErrorBoundary>
         </>
     )
 }

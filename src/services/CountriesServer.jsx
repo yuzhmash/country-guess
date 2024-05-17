@@ -1,7 +1,4 @@
-import { useState, useEffect } from "react";
-
 import { useHttp } from "../hooks/http.hooks";
-import ErrorMessage from "../components/errorMessage/ErrorMessage";
 
 
 const useCountriesServer = () =>  {
@@ -13,8 +10,8 @@ const useCountriesServer = () =>  {
 
     const getAllCoutries = async (filData) => {
         const res = await request(_apiBase);
-        let data = !filData ? res : filData
-        return data.map(_transformCharacter)
+        // let data = !filData ? res : filData
+        return res.map(_transformCharacter)
     }
 
 
@@ -45,6 +42,7 @@ const useCountriesServer = () =>  {
             name: data.name.common,
             capital: `${data.capital}`,
             languages: data.languages ? Object.entries(data.languages)[0][1] : "no language", 
+            population: data.population,
             region: data.region, 
             ccn3: data.ccn3,
             img: data.flags.svg,
