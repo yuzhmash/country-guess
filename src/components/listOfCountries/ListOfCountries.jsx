@@ -6,7 +6,7 @@ import SortBy from "../sortBy/SortBy";
 import "./ListOfCountries.sass"
 
 const ListOfCountries = () => {
-    const [sortByRegion, setSortByRegion] = useState(0)
+    const [sortByRegion, setSortByRegion] = useState("xyi")
     const [sortBy, setSortBy] = useState("")
     console.log(sortBy);
     console.log(sortByRegion);

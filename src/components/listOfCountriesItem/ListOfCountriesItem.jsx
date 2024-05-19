@@ -11,7 +11,7 @@ const ListOfCountriesItem = ({sortByRegion, sortBy}) => {
 
     const [data, setData] = useState([])
     const [sortDataByRegion, setSortDataByRegion] = useState([])
-    const [sortBySorts, setSortBySorts] = useState([])
+    const [offset, setOffset] = useState(9)
 
     const {getAllCoutries, loading, error} = useCountriesServer()
 
@@ -20,12 +20,13 @@ const ListOfCountriesItem = ({sortByRegion, sortBy}) => {
     }, [])
 
     useEffect(() => {
-        if (typeof sortByRegion === "number") {
+        if (sortByRegion === "xyi") {
             setSortDataByRegion(data);
         }
     }, [data])
 
     useEffect(() => {
+        console.log(sortByRegion);
         if (sortByRegion === "all") {
             return setSortDataByRegion(data);
         }
@@ -33,27 +34,28 @@ const ListOfCountriesItem = ({sortByRegion, sortBy}) => {
     }, [sortByRegion])
 
     useEffect(() => {
-        console.log(sortDataByRegion);
+        let sortedData;
         switch (sortBy) {
             case "most populated":
-                sortDataByRegion.sort((a, b) => b.population - a.population)
+                sortedData = [...sortDataByRegion].sort((a, b) => b.population - a.population);
                 break;
             case "a-z":
-                sortDataByRegion.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+                sortedData = [...sortDataByRegion].sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
                 break;
             case "z-a":
-                sortDataByRegion.sort((a, b) => b.name.toLowerCase().localeCompare(a.name.toLowerCase()))
+                sortedData = [...sortDataByRegion].sort((a, b) => b.name.toLowerCase().localeCompare(a.name.toLowerCase()));
                 break;
-            default: 
-                break;
+            default:
+                sortedData = sortDataByRegion;
         }
+        setSortDataByRegion(sortedData);
     }, [sortBy])
 
     // console.log(sortDataByRegion);
 
  
     const items = sortDataByRegion.map(({img, alt, name, capital, languages, region, population}, i) => {
-        if (i >= 9) return
+        if (i >= offset) return
         return (
             <div className="countries-list_item" key={i} >
                 <div className="countries-list_item_img" >
@@ -78,8 +80,14 @@ const ListOfCountriesItem = ({sortByRegion, sortBy}) => {
         <>
         {errorMessage}
         {spinner}
-        <div className="countries-list" >
-            {items}
+        <div className="countries">
+            <div className="countries-list" >
+                {items}
+            </div>
+            <button 
+                className="countries-list__btn" 
+                onClick={() => setOffset(offset+9)}
+                disabled={offset >= sortDataByRegion.length}>get 9 more</button>
         </div>
         </>
     )
