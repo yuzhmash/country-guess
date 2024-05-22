@@ -11,7 +11,7 @@ const SortBy = ({setSortByRegion, setSortBy, sortByRegion, sortBy}) => {
 
     const btns = btnsName.map((elem, i) => {
         return (
-            <div key={i} >
+            <div key={i}>
                 <input
                     type="radio" 
                     id={elem} 
@@ -26,7 +26,7 @@ const SortBy = ({setSortByRegion, setSortBy, sortByRegion, sortBy}) => {
 
     const sorts = btnsSorts.map((elem, i) => {
         return (
-            <div key={i} >
+            <div key={i}>
                 <input 
                     type="radio" 
                     id={elem} 

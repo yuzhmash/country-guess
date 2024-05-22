@@ -55,9 +55,9 @@ const ListOfCountriesItem = ({sortByRegion, sortBy}) => {
 
  
     const items = sortDataByRegion.map(({img, alt, name, capital, languages, region, population}, i) => {
-        if (i >= offset) return
+        if (i >= offset) return;
         return (
-            <div className="countries-list_item" key={i} >
+            <div className="countries-list_item" key={i} tabIndex={0}>
                 <div className="countries-list_item_img" >
                     <img src={img} alt={alt} />
                 </div>
@@ -78,17 +78,17 @@ const ListOfCountriesItem = ({sortByRegion, sortBy}) => {
 
     return (
         <>
-        {errorMessage}
-        {spinner}
-        <div className="countries">
-            <div className="countries-list" >
-                {items}
+            {errorMessage}
+            {spinner}
+            <div className="countries">
+                <div className="countries-list" >
+                    {items}
+                </div>
+                <button 
+                    className="countries-list__btn" 
+                    onClick={() => setOffset(offset+9)}
+                    disabled={offset >= sortDataByRegion.length}>get 9 more</button>
             </div>
-            <button 
-                className="countries-list__btn" 
-                onClick={() => setOffset(offset+9)}
-                disabled={offset >= sortDataByRegion.length}>get 9 more</button>
-        </div>
         </>
     )
 }

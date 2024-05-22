@@ -3,14 +3,13 @@ import { useHttp } from "../hooks/http.hooks";
 
 const useCountriesServer = () =>  {
 
-    const {loading, error, request, clearError, data} = useHttp()
+    const {loading, error, request, clearError} = useHttp()
 
     const _apiBase = 'https://restcountries.com/v3.1/all';
 
 
-    const getAllCoutries = async (filData) => {
+    const getAllCoutries = async () => {
         const res = await request(_apiBase);
-        // let data = !filData ? res : filData
         return res.map(_transformCharacter)
     }
 
